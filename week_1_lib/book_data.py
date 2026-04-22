@@ -41,26 +41,71 @@ def save_data_to_file():
         print("文件保存失败")
         return False
 
-def get_same_category(name : str , author : str ):
-    return[b for b in book_list  if b.name ==name and b.author == author]
+def get_same_category(name : str , author : str ):#第二版
+    name_strip = name.strip()
+    author_strip = author.strip()
+    return[b for b in book_list  if b.name.strip() == name_strip and b.author.strip() == author_strip]
 
-def add_book(new_id : str , name : str ,author : str):
+def add_book(new_id : str , name : str ,author : str):#第二版
+    new_id = new_id.strip()
+    name = name.strip()
+    author = author.strip()
+
+    if not new_id:
+        print("添加失败：图书编号不能为空！")
+        return False
+    if not re.fullmatch(r'^[a-zA-Z0-9]+$', new_id):
+        print("添加失败：图书编号不合法！仅允许字母、数字，不能有负号、点、符号")
+        return False
+
+    if not name:
+        print("添加失败：书名不能为空！")
+        return False
+    if not re.fullmatch(r'^[\u4e00-\u9fa5a-zA-Z ]+$', name):
+        print("添加失败：书名不合法！仅允许中文、英文、中间空格，不能有 . - [ ] = ; 等符号")
+        return False
+
+    if not author:
+        print("添加失败：作者不能为空！")
+        return False
+    if not re.fullmatch(r'^[\u4e00-\u9fa5a-zA-Z ]+$', author):
+        print("添加失败：作者不合法！仅允许中文、英文、中间空格，不能有 . - [ ] = ; 等符号")
+        return False
+
     for b in book_list:
         if b.book_id == new_id:
-            print("不可录入相同ID的书目")
+            print("添加失败：图书编号已存在！")
             return False
 
-    same_category = get_same_category ( name , author )
-    count_of_same = len(same_category)+1
+    same_category = get_same_category(name, author)
+    count = len(same_category) + 1
 
-    for b in book_list:
-        if b.name == name and b.author == author:
-            b.count = count_of_same
-
-    book = Book(new_id , name , author , count_of_same)
+    book = Book(new_id, name, author, count)
     book_list.append(book)
     save_data_to_file()
+    print("图书添加成功")
     return True
+
+#def get_same_category(name: str, author: str):#原版
+    #return [b for b in book_list if b.name == name and b.author == author]
+
+#def add_book(new_id : str , name : str ,author : str):
+#    for b in book_list:
+#        if b.book_id == new_id:
+#            print("不可录入相同ID的书目")
+#            return False
+#
+#    same_category = get_same_category ( name , author )
+#    count_of_same = len(same_category)+1
+#
+#    for b in book_list:
+#        if b.name == name and b.author == author:
+#            b.count = count_of_same
+#
+#   book = Book(new_id , name , author , count_of_same)
+#    book_list.append(book)
+#    save_data_to_file()
+#    return True
 
 def del_book(goal_book_id : str):
     for i , b in enumerate(book_list):
