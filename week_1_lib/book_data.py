@@ -1,6 +1,7 @@
 from class_book import Book
 import json
 import os
+import re
 
 book_list=[]
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -140,9 +141,15 @@ def show_all_books():
 
 def search_book(goal_name : str):
     result_list=[]
-    for i , b in enumerate(book_list):
-        if goal_name in b.name:
-            result_list.append(book_list[i])
+    input_key = goal_name.strip().replace(" ", "")
+    if not input_key:
+        print("搜索内容不能为空！")
+        return False
+
+    for b in book_list:
+        book_name_no_space = b.name.strip().replace(" ", "")
+        if input_key in book_name_no_space:
+            result_list.append(b)
 
     if len(result_list) == 0:
         print("抱歉，未找到对应图书")
@@ -173,3 +180,4 @@ def sort_by_name():
     save_data_to_file()
     print("已完成按书名升序排序，以下为排序后内容：")
     show_all_books()
+
