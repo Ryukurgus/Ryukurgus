@@ -1,6 +1,3 @@
-from tkinter.font import names
-
-
 class Book:
     def __init__(self, book_id: str, name: str, author : str ,count : int):
         self.book_id = book_id
