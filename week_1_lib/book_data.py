@@ -96,7 +96,7 @@ def show_all_books():
 def search_book(goal_name : str):
     result_list=[]
     for i , b in enumerate(book_list):
-        if b.name == goal_name:
+        if goal_name in b.name:
             result_list.append(book_list[i])
 
     if len(result_list) == 0:
