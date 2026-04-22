@@ -1,8 +1,10 @@
 from class_book import Book
 import json
+import os
 
 book_list=[]
-file_name=r"D:\Ryucurgus\week_1_lib\book.json"
+current_dir = os.path.dirname(os.path.abspath(__file__))
+file_name = os.path.join(current_dir, "book.json")
 
 def load_data_from_file():
     global book_list
