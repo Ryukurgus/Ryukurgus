@@ -1,6 +1,6 @@
 from class_book import Book
 import json
-from book_data import *  # 假设你的功能文件名为 book_data.py
+from book_data import *  
 
 def show_menu():
     print("\n======= 图书管理系统 =======")
