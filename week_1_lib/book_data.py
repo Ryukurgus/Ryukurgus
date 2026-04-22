@@ -139,7 +139,7 @@ def show_all_books():
     print("任务已完成")
     return True
 
-def search_book(goal_name : str):
+def search_book(goal_name : str):#第二版+模糊搜索+去空格检索
     result_list=[]
     input_key = goal_name.strip().replace(" ", "")
     if not input_key:
