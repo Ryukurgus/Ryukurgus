@@ -1,8 +1,11 @@
 from class_book import Book
 import json
+import os
+import re
 
 book_list=[]
-file_name=r"D:\Ryucurgus\week_1_lib\book.json"
+current_dir = os.path.dirname(os.path.abspath(__file__))
+file_name = os.path.join(current_dir, "book.json")
 
 def load_data_from_file():
     global book_list
@@ -39,26 +42,71 @@ def save_data_to_file():
         print("文件保存失败")
         return False
 
-def get_same_category(name : str , author : str ):
-    return[b for b in book_list  if b.name ==name and b.author == author]
+def get_same_category(name : str , author : str ):#第二版
+    name_strip = name.strip()
+    author_strip = author.strip()
+    return[b for b in book_list  if b.name.strip() == name_strip and b.author.strip() == author_strip]
 
-def add_book(new_id : str , name : str ,author : str):
+def add_book(new_id : str , name : str ,author : str):#第二版
+    new_id = new_id.strip()
+    name = name.strip()
+    author = author.strip()
+
+    if not new_id:
+        print("添加失败：图书编号不能为空！")
+        return False
+    if not re.fullmatch(r'^[a-zA-Z0-9]+$', new_id):
+        print("添加失败：图书编号不合法！仅允许字母、数字，不能有负号、点、符号")
+        return False
+
+    if not name:
+        print("添加失败：书名不能为空！")
+        return False
+    if not re.fullmatch(r'^[\u4e00-\u9fa5a-zA-Z ]+$', name):
+        print("添加失败：书名不合法！仅允许中文、英文、中间空格，不能有 . - [ ] = ; 等符号")
+        return False
+
+    if not author:
+        print("添加失败：作者不能为空！")
+        return False
+    if not re.fullmatch(r'^[\u4e00-\u9fa5a-zA-Z ]+$', author):
+        print("添加失败：作者不合法！仅允许中文、英文、中间空格，不能有 . - [ ] = ; 等符号")
+        return False
+
     for b in book_list:
         if b.book_id == new_id:
-            print("不可录入相同ID的书目")
+            print("添加失败：图书编号已存在！")
             return False
 
-    same_category = get_same_category ( name , author )
-    count_of_same = len(same_category)+1
+    same_category = get_same_category(name, author)
+    count = len(same_category) + 1
 
-    for b in book_list:
-        if b.name == name and b.author == author:
-            b.count = count_of_same
-
-    book = Book(new_id , name , author , count_of_same)
+    book = Book(new_id, name, author, count)
     book_list.append(book)
     save_data_to_file()
+    print("图书添加成功")
     return True
+
+#def get_same_category(name: str, author: str):#原版
+    #return [b for b in book_list if b.name == name and b.author == author]
+
+#def add_book(new_id : str , name : str ,author : str):
+#    for b in book_list:
+#        if b.book_id == new_id:
+#            print("不可录入相同ID的书目")
+#            return False
+#
+#    same_category = get_same_category ( name , author )
+#    count_of_same = len(same_category)+1
+#
+#    for b in book_list:
+#        if b.name == name and b.author == author:
+#            b.count = count_of_same
+#
+#   book = Book(new_id , name , author , count_of_same)
+#    book_list.append(book)
+#    save_data_to_file()
+#    return True
 
 def del_book(goal_book_id : str):
     for i , b in enumerate(book_list):
@@ -91,11 +139,17 @@ def show_all_books():
     print("任务已完成")
     return True
 
-def search_book(goal_name : str):
+def search_book(goal_name : str):#第二版+模糊搜索+去空格检索
     result_list=[]
-    for i , b in enumerate(book_list):
-        if b.name == goal_name:
-            result_list.append(book_list[i])
+    input_key = goal_name.strip().replace(" ", "")
+    if not input_key:
+        print("搜索内容不能为空！")
+        return False
+
+    for b in book_list:
+        book_name_no_space = b.name.strip().replace(" ", "")
+        if input_key in book_name_no_space:
+            result_list.append(b)
 
     if len(result_list) == 0:
         print("抱歉，未找到对应图书")
@@ -126,3 +180,4 @@ def sort_by_name():
     save_data_to_file()
     print("已完成按书名升序排序，以下为排序后内容：")
     show_all_books()
+
