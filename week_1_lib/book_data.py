@@ -91,22 +91,22 @@ def add_book(new_id : str , name : str ,author : str):#第二版
     #return [b for b in book_list if b.name == name and b.author == author]
 
 #def add_book(new_id : str , name : str ,author : str):
-#    for b in book_list:
-#        if b.book_id == new_id:
-#            print("不可录入相同ID的书目")
-#            return False
+#   for b in book_list:
+#       if b.book_id == new_id:
+#           print("不可录入相同ID的书目")
+#           return False
 #
-#    same_category = get_same_category ( name , author )
-#    count_of_same = len(same_category)+1
+#   same_category = get_same_category ( name , author )
+#   count_of_same = len(same_category)+1
 #
-#    for b in book_list:
-#        if b.name == name and b.author == author:
-#            b.count = count_of_same
+#   for b in book_list:
+#       if b.name == name and b.author == author:
+#           b.count = count_of_same
 #
 #   book = Book(new_id , name , author , count_of_same)
-#    book_list.append(book)
-#    save_data_to_file()
-#    return True
+#   book_list.append(book)
+#   save_data_to_file()
+#   return True
 
 def del_book(goal_book_id : str):
     for i , b in enumerate(book_list):
@@ -139,8 +139,9 @@ def show_all_books():
     print("任务已完成")
     return True
 
-def search_book(goal_name : str):#第二版+模糊搜索+去空格检索
-    result_list=[]
+
+def search_book(goal_name: str):
+    result_list = []
     input_key = goal_name.strip().replace(" ", "")
     if not input_key:
         print("搜索内容不能为空！")
@@ -148,7 +149,14 @@ def search_book(goal_name : str):#第二版+模糊搜索+去空格检索
 
     for b in book_list:
         book_name_no_space = b.name.strip().replace(" ", "")
-        if input_key in book_name_no_space:
+
+        match = True
+        for char in input_key:
+            if char not in book_name_no_space:
+                match = False
+                break
+
+        if match:
             result_list.append(b)
 
     if len(result_list) == 0:

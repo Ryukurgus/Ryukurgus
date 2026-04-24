@@ -102,7 +102,13 @@ def search_book(goal_name: str):
         print("搜索内容不能为空！")
         return False
 
-    result = [b for b in book_list if goal_name in clean_text(b.name).replace(" ", "")]
+    result = []
+    for b in book_list:
+        book_name = clean_text(b.name).replace(" ", "")
+        # 检查用户输入的每一个字，都在书名里
+        if all(char in book_name for char in goal_name):
+            result.append(b)
+
     if not result:
         print("抱歉，未找到对应图书")
         return False
