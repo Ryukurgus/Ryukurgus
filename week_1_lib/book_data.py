@@ -73,6 +73,7 @@ def add_book(new_id : str , name : str ,author : str):#第二版
         print("添加失败：作者不合法！仅允许中文、英文、中间空格，不能有 . - [ ] = ; 等符号")
         return False
 
+
     for b in book_list:
         if b.book_id == new_id:
             print("添加失败：图书编号已存在！")
@@ -80,6 +81,10 @@ def add_book(new_id : str , name : str ,author : str):#第二版
 
     same_category = get_same_category(name, author)
     count = len(same_category) + 1
+
+    for b in  book_list:
+        if b.name == name:
+            b.count = count
 
     book = Book(new_id, name, author, count)
     book_list.append(book)

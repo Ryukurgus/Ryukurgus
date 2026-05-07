@@ -9,12 +9,24 @@
         "book_id": "1345678",
         "name": "西西弗斯",
         "author": "加缪",
-        "count": 1
+        "count": 3
     },
     {
         "book_id": "134514",
         "name": "局外人",
         "author": "加缪",
         "count": 1
+    },
+    {
+        "book_id": "114514",
+        "name": "西西弗斯",
+        "author": "加缪",
+        "count": 3
+    },
+    {
+        "book_id": "123131",
+        "name": "西西弗斯",
+        "author": "加缪",
+        "count": 3
     }
 ]
